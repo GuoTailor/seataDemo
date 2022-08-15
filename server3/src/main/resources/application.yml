@@ -1,0 +1,36 @@
+server:
+  port: 10313
+
+spring:
+  application:
+    name: server3
+  cloud:
+    nacos:
+      serverAddr: 47.108.154.173:8848
+      discovery:
+        namespace: test
+        group: test
+    alibaba:
+      seata:
+        tx-service-group: ${spring.application.name}_tx_group
+  datasource: #?????
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: ${db_url:jdbc:mysql://47.108.154.173:3306/fescar?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull}
+    #url: ${db_url:jdbc:mysql://localhost:3306/7ebit?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=true}
+    username: ${db_username:root}
+    password: ${db_password:Fff@202202}
+    #password: ${db_password:root}
+    driver-class-name: ${db_driver:com.mysql.cj.jdbc.Driver}
+
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    com:
+      example:
+        server3:
+          mapper: debug
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml

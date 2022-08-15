@@ -1,0 +1,54 @@
+server:
+  port: 10311
+
+spring:
+  application:
+    name: server1
+  cloud:
+    nacos:
+      serverAddr: 47.108.154.173:8848
+      discovery:
+        namespace: test
+        group: test
+    alibaba:
+      seata:
+        tx-service-group: ${spring.application.name}_tx_group
+  datasource: #?????
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: ${db_url:jdbc:mysql://47.108.154.173:3306/seata-test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull}
+    #url: ${db_url:jdbc:mysql://localhost:3306/7ebit?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=true}
+    username: ${db_username:root}
+    password: ${db_password:Fff@202202}
+    #password: ${db_password:root}
+    driver-class-name: ${db_driver:com.mysql.cj.jdbc.Driver}
+
+  main:
+    allow-bean-definition-overriding: true
+
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: "seata-server"
+      server-addr: 47.108.154.173:8848
+      group: "test"
+      namespace: "test"
+      username: "nacos"
+      password: "nacos"
+  config:
+    type: file
+  service:
+    vgroup-mapping:
+      server1_tx_group: default
+    #degrade, current not support
+    enableDegrade: false
+    #disable seata
+    disableGlobalTransaction: false
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+feign:
+  client:
+    config:
+      default:
+        read-timeout: 30_000
